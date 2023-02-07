@@ -70,6 +70,13 @@ const SQLRepository = () => {
         .catch(handleUniqueUsernameError(user.username))
     )
 
+  const getByLogin = (username, password) => knex
+    .select('*')
+    .from('users')
+    .where({ username })
+    .then(handleNotFound(username))
+    .then(decodeUser)
+
   const update = user =>
     // mysql não tem suporte pra UPDATE ... RETURNING <props>
     // (UPDATE sempre retorna a quantidade de registros que foi alterada)
@@ -91,6 +98,7 @@ const SQLRepository = () => {
     list,
     get,
     insert,
+    getByLogin,
     update,
     del,
   }

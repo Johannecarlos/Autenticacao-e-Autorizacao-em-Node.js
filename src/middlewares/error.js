@@ -1,4 +1,4 @@
-const { NotFoundError, ValidationError, ConflictError } = require("../errors")
+const { NotFoundError, ValidationError, ConflictError, AuthenticationError } = require("../errors")
 
 const validationsToCause = validations =>
   validations.map(({ message, context: { label } }) => ({ message, field: label }))
@@ -31,6 +31,24 @@ const responseMappers = {
       cause: [],
     },
   }),
+  [AuthenticationError.name]: (error) => ({
+    status: 401,
+    body: {
+      statusCode: 401,
+      error: AuthenticationError.name,
+      message: error.message,
+      cause: error.cause
+    }
+  }),
+UnauthorizedError: (error) => ({
+  status: 401,
+    body: {
+      statusCode: 401,
+      error: AuthenticationError.name,
+      message: error.message,
+      cause: 'Invalid Token'
+    }
+}),
   default: (error) => ({
     status: 500,
     body: {
