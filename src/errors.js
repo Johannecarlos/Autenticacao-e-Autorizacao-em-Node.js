@@ -22,6 +22,15 @@ class AuthenticationError extends DomainError {
   }
 }
 
+class AuthorizationError extends DomainError {
+  constructor (cause = 'not specifield') {
+    super('The user could not be authorized')
+    this.name = this.constructor.name
+    this.username = username
+    this.cause = cause
+  }
+}
+
 class ValidationError extends DomainError {
   constructor({ message = 'Invalid parameters', validations }) {
     super(message)
@@ -37,4 +46,5 @@ module.exports = {
   ValidationError,
   ConflictError,
   AuthenticationError,
+  AuthorizationError,
 }
